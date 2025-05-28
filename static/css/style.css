@@ -1,0 +1,352 @@
+/* Geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #e9f5fc; /* Azul claro para um ambiente acolhedor */
+    color: #333;
+    padding: 20px;
+}
+
+/* Container Principal */
+.container {
+    max-width: 80%; /* Largura adaptável */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff; /* Branco para clareza */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h2 {
+    color: #2a6d8f; /* Azul mais escuro para destaque */
+}
+
+/* Navegação */
+nav {
+    background-color: #1d6f9a; /* Azul mais forte para a navegação */
+    color: white;
+    padding: 20px;
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha */
+}
+
+nav h2 {
+    margin-left: 10px;
+    font-size: 1.5rem;
+    color:white;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #145a79; /* Azul mais escuro ao passar o mouse */
+    border-radius: 5px;
+}
+
+.logout {
+    background-color: #e74c3c; /* Vermelho mais suave para o botão de logout */
+    border-radius: 5px;
+}
+
+.logout:hover {
+    background-color: #c0392b; /* Vermelho escuro ao passar o mouse */
+}
+
+/* Conteúdo Principal */
+.main-content {
+    flex: 1;
+    padding: 40px 20px;
+    background-color: #ffffff; /* Branco para clareza */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.main-content h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.main-content p {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.open_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.button_close {
+    background-color: #e74c3c; /* Vermelho */
+    color: white;
+    border: none;
+    margin-bottom:20px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.button_close:hover {
+    background-color: #c0392b; /* Vermelho escuro */
+}
+
+/* Formulários */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    width: 100%; /* 100% da largura do contêiner */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #1d6f9a; /* Azul de foco */
+    outline: none;
+}
+
+/* Botões de Formulário */
+form button[type="submit"] {
+    background-color: #1d6f9a; /* Azul de ação */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #145a79; /* Azul escuro ao passar o mouse */
+}
+
+/* Tabela */
+.table-container {
+    overflow-x: auto; /* Permite rolagem horizontal */
+    margin-top: 20px; /* Espaçamento superior */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Define uma largura mínima para manter a legibilidade */
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr td {
+    white-space: nowrap; /* Impede a quebra de linha */
+    overflow: hidden; /* Esconde o excesso de texto */
+    text-overflow: ellipsis; /* Adiciona reticências */
+}
+
+table th {
+    background-color: #1d6f9a; /* Azul de cabeçalho */
+    color: white;
+}
+
+table tr:hover {
+    background-color: #f1f1f1; /* Cinza claro ao passar o mouse */
+}
+
+/* Lista de Mensagens */
+ul {
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul li {
+    background-color: #d9edf7; /* Azul claro para mensagens */
+    padding: 10px;
+    border: 1px solid #bce8f1; /* Bordas mais suaves */
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Muda a direção da navegação */
+        align-items: flex-start; /* Alinha os itens à esquerda */
+    }
+
+    nav a {
+        margin-right: 0;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .main-content {
+        padding: 20px;
+        margin: 10px 0; /* Margem reduzida em dispositivos menores */
+    }
+
+    nav h2 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .container {
+        max-width: 95%; /* Ajuste na largura do contêiner */
+    }
+}
+
+/* Estilo do Modal */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fica fixo na tela */
+    z-index: 1000; /* Fica acima de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total da tela */
+    height: 100%; /* Altura total da tela */
+    overflow: auto; /* Adiciona rolagem se necessário */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro e transparente */
+}
+
+.modal-content {
+    background-color: #ffffff; /* Branco para clareza */
+    margin: 15% auto; /* Centraliza verticalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Largura adaptável */
+    max-width: 400px; /* Largura máxima */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+/* Botões Gerais */
+button {
+    margin: 5px; /* Espaçamento entre os botões */
+}
+
+/* Estilos da Página de Login */
+.login-container {
+    max-width: 400px; /* Largura máxima do contêiner de login */
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff; /* Branco para clareza */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centraliza o texto dentro do contêiner */
+    margin: 50px auto; /* Centraliza horizontalmente */
+}
+
+.login-container h2 {
+    color: #2a6d8f; /* Azul mais escuro para destaque */
+    margin-bottom: 20px; /* Adiciona um espaçamento abaixo do título */
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0; /* Adiciona um espaçamento entre os campos */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+}
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+    border-color: #1d6f9a; /* Azul de foco */
+    outline: none; /* Remove a borda padrão */
+}
+
+.login-container button[type="submit"] {
+    background-color: #1d6f9a; /* Azul de ação */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px; /* Adiciona um espaçamento superior */
+}
+
+.login-container button[type="submit"]:hover {
+    background-color: #145a79; /* Azul escuro ao passar o mouse */
+}
+
+/* Estilo para o botão de deletar */
+.button_delete {
+    background-color: #f8d7da; /* Fundo suave de alerta */
+    color: #721c24; /* Texto vermelho escuro */
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+}
+
+.button_delete:hover {
+    background-color: #f5c6cb; /* Fundo levemente mais escuro ao passar o mouse */
+    color: #491217; /* Texto mais escuro */
+}
+
+
+/* Botão de editar */
+.button_edit {
+    background-color: #d1ecf1; /* Fundo suave de informação */
+    color: #0c5460; /* Texto azul escuro */
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+}
+
+.button_edit:hover {
+    background-color: #bee5eb; /* Fundo levemente mais escuro ao passar o mouse */
+    color: #083540; /* Texto mais escuro */
+}
+
+/* Botão de adicionar */
+.button_add {
+    background-color: #d4edda; /* Fundo suave de sucesso */
+    color: #155724; /* Texto verde escuro */
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
+}
+
+.button_add:hover {
+    background-color: #c3e6cb; /* Fundo levemente mais escuro ao passar o mouse */
+    color: #0b3921; /* Texto mais escuro */
+}
+
+a.button_edit, a.button_delete, a.button_add {
+    text-decoration: none;
+}
+
+/* Fim do Código */

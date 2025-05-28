@@ -1,0 +1,255 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="container">
+  <div>
+    <h2>Editar Refugiado: {{ refugiado.nome }}</h2>
+  </div>
+  <div>
+    <form id="refugiado-form" class="form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+          {{form.nome.label}}
+          {{ form.nome }}
+      </div>
+      <div class="form-group">
+          {{form.nascimento.label}}
+          {{ form.nascimento }}
+      </div>
+      <div class="form-group">
+        {{ form.tipo_doc.label }}
+        {{ form.tipo_doc }}
+    </div>
+    <div id="numero_doc_edit"  class="form-group">
+        {{ form.numero_doc.label }}
+        {{ form.numero_doc }}
+    </div>      
+      <div class="form-group">
+          {{ form.profissao.label }}
+          {{ form.profissao }}
+      </div>
+      <div class="form-group">
+          {{ form.fk_escolaridade.label }}
+          {{ form.fk_escolaridade }}
+      </div>
+      <div class="form-group">
+          {{ form.nacionalidade.label }}
+          {{ form.nacionalidade }}
+      </div>
+      <div class="form-group">
+          {{ form.sexo.label }}
+          {{ form.sexo }}
+      </div>
+      <div class="form-group">
+          {{ form.endereco.label }}
+          {{ form.endereco }}
+      </div>
+      <div class="form-group">
+          {{ form.tipo_residencia.label }}
+          {{ form.tipo_residencia }}
+      </div>
+      <div class="form-group">
+          {{ form.telefone.label }}
+          {{ form.telefone }}
+      </div>
+      <div class="form-group">
+          {{ form.email.label }}
+          {{ form.email }}
+      </div>
+      <div class="form-group">
+          {{ form.renda_mensal.label }}
+          {{ form.renda_mensal }}
+      </div>
+      <div class="form-group">
+          {{form.data_chegada.label}}
+          {{ form.data_chegada }}
+      </div>
+      <div class="form-group">
+          {{ form.descricao_chegada.label }}
+          {{ form.descricao_chegada }}
+      </div>
+      <div class="form-group">
+          {{ form.quantidade_familiares.label }}
+          {{ form.quantidade_familiares }}
+      </div>
+      <div class="form-group form-check">
+          {{ form.necessidade_especial }}
+          <label for="{{ form.necessidade_especial.id_for_label }}" class="form-check-label">Necessidade Especial</label>
+      </div>
+      <div class="form-group form-check">
+          {{ form.hipertenso }}
+          <label for="{{ form.hipertenso.id_for_label }}" class="form-check-label">Hipertenso</label>
+      </div>
+      <div class="form-group form-check">
+          {{ form.diabetico }}
+          <label for="{{ form.diabetico.id_for_label }}" class="form-check-label">Diabético</label>
+      </div>
+      <div class="form-group form-check">
+        {{ form.deficiencia }}
+        <label for="{{ form.deficiencia.id_for_label }}" class="form-check-label">Deficiência</label>
+    </div>
+    <div id="id_div_deficiencia_edit"  class="form-group">
+        {{ form.tipo_deficiencia }}
+    </div>
+      <div class="form-group form-check">
+          {{ form.trabalha }}
+          <label for="{{ form.trabalha.id_for_label }}" class="form-check-label">Trabalha</label>
+      </div>
+      <div id="id_div_trabalha"  class="form-group">
+          {{ form.local_trabalho }}
+      </div>
+
+      <div class="form-group form-check">
+        {{ form.parente_no_pais }}
+        <label for="{{ form.parente_no_pais.id_for_label }}" class="form-check-label">Parente no País</label>
+    </div>
+    
+    <div id="id_div_grauParDoParNoPais" class="form-group">
+        <label for="GrauParDoParNoPais_lista">Informe os Parentes que você tem no País:</label>
+        <select name="GrauParDoParNoPais" id="GrauParDoParNoPais" multiple class="form-control">
+            {% for GrauParDoParNoPais in grau_parente_lista %}
+                <option value="{{ GrauParDoParNoPais.id }}" 
+                        {% if GrauParDoParNoPais in refugiado.grau_parente.all %}selected{% endif %}>
+                    {{ GrauParDoParNoPais.grau }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+      <br>
+      <div class="form-group">
+          {{ form.relatorio_social.label }}
+          {{ form.relatorio_social }}
+      </div>
+      <div class="form-group">
+        <label for="medicamentos">Medicamentos:</label>
+        <select name="medicamentos" id="medicamentos" multiple class="form-control">
+            {% for medicamento in medicamentos %}
+                <option value="{{ medicamento.id }}" 
+                        {% if medicamento in refugiado.medicamentos.all %}selected{% endif %}>
+                    {{ medicamento.nome }}
+                </option>
+            {% endfor %}
+        </select>
+      </div>
+
+    
+
+      <div id="id_div_localAtendimento" class="form-group">
+        <label for="LocalAtendimento_lista">Informe o Local de Atendimento que você já foi atendido antes:</label>
+        <select name="LocalAtendimento" id="LocalAtendimento" multiple class="form-control">
+            {% for LocalAtendimento in local_atendimento_lista %}
+                <option value="{{ LocalAtendimento.id }}" 
+                        {% if LocalAtendimento in refugiado.local_atendimento.all %}selected{% endif %}>
+                    {{ LocalAtendimento.nome }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+
+
+
+      <label for="id_arquivo">Escolha os documentos:</label>
+      <input type="file" name="arquivo" id="id_arquivo" multiple class="form-control form-input">
+    
+
+    <h1>Filhos</h1>
+    {% for filho in filhos %}
+    <div class="filho-form">
+      <h4>Filho: {{ filho.nome }}</h4>
+      <!-- Campo oculto para ID do filho -->
+      <input type="hidden" name="filhos[{{ forloop.counter0 }}][id]" value="{{ filho.id }}" class="form-control">
+
+      <!-- Campo Nome -->
+      <label for="filho_nome_{{ forloop.counter0 }}">Nome</label>
+      <input type="text" name="filhos[{{ forloop.counter0 }}][nome]" value="{{ filho.nome }}" required class="form-control">
+
+      <!-- Campo Nascimento -->
+      <label for="filho_nascimento_{{ forloop.counter0 }}">Nascimento</label>
+      <input type="date" name="filhos[{{ forloop.counter0 }}][nascimento]" value="{{ filho.nascimento|date:'Y-m-d' }}" required class="form-control">
+
+      <!-- Campo Escolaridade -->
+      <label for="filho_escolaridade_{{ forloop.counter0 }}">Escolaridade</label>
+      <select name="filhos[{{ forloop.counter0 }}][fk_escolaridade]" required class="form-control">
+        {% for escolaridade in escolaridades %}
+          <option value="{{ escolaridade.id }}" {% if escolaridade.id == filho.fk_escolaridade.id %}selected{% endif %}>
+            {{ escolaridade.nome }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <!-- Campo Colégio -->
+      <label for="filho_colegio_{{ forloop.counter0 }}">Colégio</label>
+      <select name="filhos[{{ forloop.counter0 }}][fk_colegio]" required class="form-control">
+        {% for colegio in colegios %}
+          <option value="{{ colegio.id }}" {% if colegio.id == filho.fk_colegio.id %}selected{% endif %}>
+            {{ colegio.nome }}
+          </option>
+        {% endfor %}
+      </select>
+
+    </div>
+    {% endfor %}
+
+    <!-- Botão de envio -->
+    <button type="submit" class="btn btn-primary">Salvar</button>
+  </form>
+  </div>
+
+
+  <a href="{% url 'refugiado' %}">Voltar</a>
+</div>
+<script>
+
+
+
+    // // Gerenciar checkbox "Parente no País" 
+    // const checkbox_parente_no_pais = document.getElementById("id_parente_no_pais");
+    // checkbox_parente_no_pais.addEventListener("change", function () {
+    //     const divGrauParente = document.getElementById("id_div_grauParDoParNoPais");
+    //     divGrauParente.style.display = checkbox_parente_no_pais.checked ? 'block' : 'none';
+    // });
+
+    // // Gerenciar checkbox "Trabalha"
+    // const checkbox_trabalha = document.getElementById("id_trabalha");
+    // checkbox_trabalha.addEventListener("change", function () {
+    //     const divTrabalha = document.getElementById("id_div_trabalha");
+    //     divTrabalha.style.display = checkbox_trabalha.checked ? 'block' : 'none';
+    // });
+
+    // // Gerenciar checkbox "Deficiência"
+    // const checkbox_deficiencia = document.getElementById("id_deficiencia");
+    // checkbox_deficiencia.addEventListener("change", function () {
+    //     const divDeficiencia = document.getElementById("id_div_deficiencia_edit");
+    //     divDeficiencia.style.display = checkbox_deficiencia.checked ? 'block' : 'none';
+    //     if(checkbox_deficiencia.checked) {
+
+    //     }
+    //     else 
+    //     {
+    //         document.getElementById("id_tipo_deficiencia").value = ''
+    //     }
+    // });
+
+    // Listener para dropdown "Tipo de Documento"
+    // document.addEventListener("DOMContentLoaded", () => {
+    //    // Referência ao dropdown pelo ID
+    //    const select_tipo_doc = document.getElementById("tipo_doc");
+
+    //    select_tipo_doc.addEventListener('change', function () {
+    //        const selectedText = select_tipo_doc.options[select_tipo_doc.selectedIndex].text;
+    //        if (selectedText === '---------') {
+    //            document.getElementById("numero_doc_edit").style.display = 'none';
+    //        } else {
+    //            document.getElementById("numero_doc_edit").style.display = 'block';
+    //        }
+    //    });
+
+   });
+
+   
+
+</script>
+{% endblock %}
+

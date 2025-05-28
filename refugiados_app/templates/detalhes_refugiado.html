@@ -1,0 +1,141 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+<!-- Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2><br><br>
+        <p>Você tem certeza de que deseja excluir este item?</p><br><br>
+        <button class="button_delete" id="confirmDelete">Sim, excluir</button>
+        <button class="button_close" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Detalhes do Refugiado: {{ refugiado.nome }} </h2>
+    <p><strong>Data de Nascimento:</strong> {{ refugiado.nascimento |date:'d/m/Y' }}</p>
+    <p><strong>Tipo de Documento:</strong> {% if refugiado.tipo_doc %} {{ refugiado.tipo_doc }} {% else %} Não Cadastrado {% endif %}</p>
+    {% if refugiado.tipo_doc %} 
+    <p><strong>Número do Documento:</strong>{% if refugiado.numero_doc %} {{ refugiado.numero_doc }} {% else %} Não Cadastrado {% endif %} </p>
+    {% else %}
+
+    {% endif %}
+    <p><strong>Profissão:</strong> {{ refugiado.profissao }}</p>
+    <p><strong>Escolaridade:</strong> {{ refugiado.fk_escolaridade }}</p>
+    <p><strong>Nacionalidade:</strong> {{ refugiado.nacionalidade }}</p>
+    <p><strong>Sexo:</strong> {{ refugiado.sexo }}</p>
+    <p><strong>Endereço:</strong> {{ refugiado.endereco }}</p>
+    <p><strong>Tipo de Residência:</strong> {{ refugiado.tipo_residencia }}</p>
+    <p><strong>Telefone:</strong> {{ refugiado.telefone }}</p>
+    <p><strong>Email:</strong> {{ refugiado.email }}</p>
+    <p><strong>Necessidade Especial:</strong> {% if refugiado.necessidade_especial == False %} Não  {% else %} {{ refugiado.necessidade_especial }} {% endif %}</p>
+    <p><strong>Renda Mensal:</strong> R$ {{ refugiado.renda_mensal }}</p>
+    <p><strong>Data de Chegada:</strong> {{ refugiado.data_chegada | date:'d/m/Y' }}</p>
+    <p><strong>Descrição de Chegada:</strong> {{ refugiado.descricao_chegada }}</p>
+    <p><strong>Quantidade de Familiares:</strong> {{ refugiado.quantidade_familiares }}</p>
+    <p><strong>Hipertenso:</strong> {% if refugiado.hipertenso == True %} Sim {% else %} Não {% endif %}</p>
+    <p><strong>Diabético:</strong> {% if refugiado.diabetico == True %} Sim  {% else %} Não {% endif %}</p>
+    <p><strong>Relatório Social:</strong> {{ refugiado.relatorio_social }}</p>
+    <p><strong>Trabalha:</strong> {% if refugiado.trabalha == False %} Não  {% else %} Sim {% endif %}</p>
+    {% if refugiado.trabalha == False %} {% else %} <p><strong>Local de Trabalho:</strong> {{ refugiado.local_trabalho }}</p>{% endif %}
+    
+    <p><strong>Deficiência:</strong> {% if refugiado.deficiencia == False %} Não  {% else %} Sim {% endif %}</p>
+    <p><strong>Tipo Deficiência:</strong> {% if refugiado.deficiencia == False %} Não  {% else %} {{refugiado.tipo_deficiencia}} {% endif %}</p>
+    <p><strong>Parente no País:</strong> {% if refugiado.parente_no_pais == False %} Não  {% else %} Sim {% endif %}</p>
+    <br>
+    <h3>Documentos</h3>
+        <ul>
+        {% for arquivo in arquivos %}
+        <li>
+            <a href="{{arquivo.arquivo.url}}">{{arquivo.arquivo}}</a>
+            <form method="POST" action="{% url 'excluir_documento' arquivo.id refugiado.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Excluir</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>Não há documentos Cadastrados</li>
+        {% endfor %}
+    </ul>
+    <h3>Local Atendimento Anterior:</h3>
+    <ul>
+        {% for localAtendimento in localAtendimento_lista %}
+        <li>{{ localAtendimento.nome }}</li>
+        {% empty %}
+        <li>Não há Local de Atendimento associado.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Graus de Parentesco</h3>
+    <ul>
+        {% for grau in graus_parentesco %}
+        <li>{{ grau.grau }}</li>
+        {% empty %}
+        <li>Não há graus de parentesco associados.</li>
+        {% endfor %}
+    </ul>
+    <!-- <p><strong>Quantidade de Filhos:</strong> {{ quantidade_filhos }}</p> -->
+
+    <!-- Seção de Filhos -->
+    <h3>Filhos</h3>
+    {% if filhos %}
+    <ul>
+        {% for filho in filhos %}
+        <li>
+            <p><strong>Nome:</strong> {{ filho.nome }}</p>
+            <p><strong>Data de Nascimento:</strong> {{ filho.nascimento | date:'d/m/Y' }}</p>
+            <p><strong>Nacionalidade:</strong> {{ filho.nacionalidade }}</p>
+            <p><strong>Colégio:</strong> {% if filho.fk_colegio %}{{ filho.fk_colegio.nome }}{% else %}Não informado{% endif %}</p>
+            <p><strong>Escolaridade:</strong> {% if filho.fk_escolaridade %}{{ filho.fk_escolaridade.nome }}{% else %}Não informado{% endif %}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Este refugiado não possui filhos cadastrados.</p>
+    {% endif %}
+
+    <!-- Seção de Medicamentos -->
+    <h3>Medicamentos</h3>
+    {% if refugiado.medicamentos.all %}
+    <ul>
+        {% for medicamento in refugiado.medicamentos.all %}
+        <li>
+            <p><strong>Nome:</strong> {{ medicamento.nome }}</p>
+            <p><strong>Valor:</strong> R${{ medicamento.valor }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Este refugiado não possui medicamentos cadastrados.</p>
+    {% endif %}
+    <br>
+    <a  href="{% url 'editar_refugiado' refugiado.id %}" class="button_edit">Editar Refugiado</a>
+    {% if user.is_superuser %}
+    <a onclick="openModal({{refugiado.id}})" class="button_delete">Excluir Refugiado</a>
+    {% endif %}
+    <a href="{% url 'adicionar_filho' refugiado.id %}" class="button_add">Adicionar Novo Filho</a>
+    
+</div>
+
+
+<script>
+    
+function openModal(id) {
+    document.getElementById('confirmModal').style.display = 'block';
+    id_refugiado = id;
+}
+function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+}
+document.getElementById('confirmDelete').onclick = function() {
+    window.location.href = '/refugiado/deletar/' + id_refugiado;
+};
+window.onclick = function(event) {
+    const modal = document.getElementById('confirmModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+};
+</script>
+{% endblock %}

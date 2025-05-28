@@ -1,0 +1,146 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+
+<!-- Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2><br><br>
+        <p>Você tem certeza de que deseja excluir este item?</p><br><br>
+        <button class="button_delete" id="confirmDelete">Sim, excluir</button>
+        <button class="button_close" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Bazar</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div  style="display: none;">
+        <form id="form_add_bazar" class="form" method="post">
+            {% csrf_token %}
+            {{ form.as_table }}
+            <button type="submit">Enviar</button>
+        </form>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    
+
+</div>
+
+<br>
+<div class="container">
+    <div class="open_button">
+        <h2>Tabela</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">-</button>
+    </div>
+    <div>
+        <div class="form-group">
+            <label for="searchInput">Pesquisar por nome:</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Digite o nome">
+        </div>
+        
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Valor Total Arrecadado</th>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    {% if request.user.atendente.grupo == 'Gerente' %}
+                    <th>Editar</th>
+                    <th>Ações</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for bazar in bazares %}
+                <tr>
+                    <td>{{ bazar.titulo }}</td>
+                    <td>R$ {{ bazar.valorTotal }}</td>
+                    <td>{{ bazar.data | date:'d/m/Y' }}</td>
+                    <td><p style="text-overflow:ellipsis">{{ bazar.descricao }}</p></td>
+                    {% if request.user.atendente.grupo == 'Gerente' %}
+                    <td><a class="button_edit" href="{% url 'editar_bazar' bazar.id %}">Editar</a></td>
+                    <td><button class="button_delete" onclick="openModal({{ bazar.id }})">Excluir</button></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
+<br>
+
+<script>
+    function gerencia_visibilidade(e){
+        const button = e.target;
+        const pai = button.parentNode;
+        const avo = pai.parentNode;
+        const pais = avo.children
+        const conteudo = pais[1] // filho 2
+        if (conteudo.style.display === 'none') {
+            conteudo.style.display = 'block';
+                    button.innerHTML = '-';
+                } else {
+                    conteudo.style.display = 'none';
+                    button.innerHTML = '+';
+                }
+    };
+    
+    let id_bazar;
+    
+    function openModal(id) {
+        document.getElementById('confirmModal').style.display = 'block';
+        id_bazar = id;
+    }
+    function closeModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+    }
+    document.getElementById('confirmDelete').onclick = function() {
+        window.location.href = '/bazar/deletar/' + id_bazar;
+    };
+    window.onclick = function(event) {
+        const modal = document.getElementById('confirmModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const table = document.querySelector("table");
+    const rows = table.querySelectorAll("tbody tr");
+
+    // Função para filtrar as linhas da tabela
+    searchInput.addEventListener("input", function () {
+        const searchTerm = searchInput.value.toLowerCase();  // Obtém o texto da pesquisa
+
+        rows.forEach(function (row) {
+            const nomeCell = row.querySelector("td:first-child");  // Primeiro <td> que é o nome
+            const nome = nomeCell.textContent.toLowerCase();  // Obtém o nome e converte para minúsculas
+
+            // Exibe ou oculta a linha dependendo da correspondência
+            if (nome.includes(searchTerm)) {
+                row.style.display = "";  // Exibe a linha
+            } else {
+                row.style.display = "none";  // Oculta a linha
+            }
+        });
+    });
+});
+
+</script>
+
+{% endblock %}

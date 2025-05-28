@@ -1,0 +1,15 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Adicionar Filho para o Refugiado: {{ refugiado.nome }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button_submit">Salvar Filho</button>
+    </form>
+
+    <a href="{% url 'detalhes_refugiado' refugiado.id %}" class="button_back">Voltar aos Detalhes</a>
+</div>
+{% endblock %}

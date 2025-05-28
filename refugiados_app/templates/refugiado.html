@@ -1,0 +1,338 @@
+{% extends 'dashboard.html' %}
+
+
+{% block content %}
+
+<!-- Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2><br><br>
+        <p>Você tem certeza de que deseja excluir este item?</p><br><br>
+        <button class="button_delete" id="confirmDelete">Sim, excluir</button>
+        <button class="button_close" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Refugiado</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display:none">
+        <form id="refugiado-form" class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.nome.label}}
+                {{ form.nome }}
+            </div>
+            <div class="form-group">
+                {{form.nascimento.label}}
+                {{ form.nascimento }}
+            </div>
+            <div class="form-group">
+                {{ form.tipo_doc.label }}
+                {{ form.tipo_doc }}
+            </div>
+            <div id="numero_doc" style="display: none;" class="form-group">
+                {{ form.numero_doc.label }}
+                {{ form.numero_doc }}
+            </div>
+            <div class="form-group">
+                {{ form.profissao.label }}
+                {{ form.profissao }}
+            </div>
+            <div class="form-group">
+                {{ form.fk_escolaridade.label }}
+                {{ form.fk_escolaridade }}
+            </div>
+            <div class="form-group">
+                {{ form.nacionalidade.label }}
+                {{ form.nacionalidade }}
+            </div>
+            <div class="form-group">
+                {{ form.sexo.label }}
+                {{ form.sexo }}
+            </div>
+            <div class="form-group">
+                {{ form.endereco.label }}
+                {{ form.endereco }}
+            </div>
+            <div class="form-group">
+                {{ form.tipo_residencia.label }}
+                {{ form.tipo_residencia }}
+            </div>
+            <div class="form-group">
+                {{ form.telefone.label }}
+                {{ form.telefone }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                {{ form.renda_mensal.label }}
+                {{ form.renda_mensal }}
+            </div>
+            <div class="form-group">
+                {{form.data_chegada.label}}
+                {{ form.data_chegada }}
+            </div>
+            <div class="form-group">
+                {{ form.descricao_chegada.label }}
+                {{ form.descricao_chegada }}
+            </div>
+            <div class="form-group">
+                {{ form.quantidade_familiares.label }}
+                {{ form.quantidade_familiares }}
+            </div>
+            <div class="form-group form-check">
+                {{ form.necessidade_especial }}
+                <label for="{{ form.necessidade_especial.id_for_label }}" class="form-check-label">Necessidade
+                    Especial</label>
+            </div>
+            <div class="form-group form-check">
+                {{ form.hipertenso }}
+                <label for="{{ form.hipertenso.id_for_label }}" class="form-check-label">Hipertenso</label>
+            </div>
+            <div class="form-group form-check">
+                {{ form.diabetico }}
+                <label for="{{ form.diabetico.id_for_label }}" class="form-check-label">Diabético</label>
+            </div>
+            <div class="form-group form-check">
+                {{ form.deficiencia }}
+                <label for="{{ form.deficiencia.id_for_label }}" class="form-check-label">Deficiência</label>
+            </div>
+            <div id="id_div_deficiencia" style="display: none;" class="form-group">
+                {{ form.tipo_deficiencia }}
+            </div>
+            <div class="form-group form-check">
+                {{ form.trabalha }}
+                <label for="{{ form.trabalha.id_for_label }}" class="form-check-label">Trabalha</label>
+            </div>
+            <div id="id_div_trabalha" style="display: none;" class="form-group">
+                {{ form.local_trabalho }}
+            </div>
+
+            <div class="form-group form-check">
+                {{ form.parente_no_pais }}
+                <label for="{{ form.parente_no_pais.id_for_label }}" class="form-check-label">Parente no País</label>
+            </div>
+
+            <div id="id_div_grauParDoParNoPais" style="display:none;" class="form-group">
+                <label for="GrauParDoParNoPais_lista">Informe os Parentes que voce tem no Pais:</label>
+                <select name="GrauParDoParNoPais" id="GrauParDoParNoPais" multiple class="form-control">
+                    {% for GrauParDoParNoPais in grauParDoParNoPais_lista %}
+                    <option value="{{ GrauParDoParNoPais.id }}">{{ GrauParDoParNoPais.grau }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                {{ form.relatorio_social.label }}
+                {{ form.relatorio_social }}
+            </div>
+            <div class="form-group">
+                <label for="medicamentos">Medicamentos:</label>
+                <select name="medicamentos" id="medicamentos" multiple class="form-control">
+                    {% for medicamento in medicamentos %}
+                    <option value="{{ medicamento.id }}">{{ medicamento.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+
+            <div id="id_div_localAtendimento" class="form-group">
+                <label for="LocalAtendimento_lista">Informe o Local de Atendimento que você já foi atendido
+                    antes:</label>
+                <select name="LocalAtendimento" id="LocalAtendimento" multiple class="form-control">
+                    {% for LocalAtendimento in localAtendimento_lista %}
+                    <option value="{{ LocalAtendimento.id }}">{{ LocalAtendimento.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+
+            <label for="id_arquivo">Escolha os documentos:</label>
+            <input type="file" name="arquivo" id="id_arquivo" multiple class="form-control form-input">
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Tabela</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">-</button>
+    </div>
+    <div>
+        <div class="form-group">
+            <label for="searchInput">Pesquisar por nome:</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Digite o nome">
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data Nascimento</th>
+                        <th>Nº Documento</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Nacionalidade</th>
+                        <th>Sexo</th>
+                        <!-- <th>Editar</th> -->
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for refugiado in refugiados %}
+                    <tr>
+                        <td>{{refugiado.nome }}</td>
+                        <td>{{refugiado.nascimento | date:'d/m/Y' }}</td>
+                        <td>
+                            {% if refugiado.numero_doc %}
+                            {{ refugiado.numero_doc }}
+                            {% else %}
+                            Não Cadastrado
+                            {% endif %}
+                        </td>
+                        <td>{{refugiado.telefone }}</td>
+                        <td>{{refugiado.email }}</td>
+                        <td>{{refugiado.nacionalidade }}</td>
+                        <td>{{refugiado.sexo }}</td>
+                        <!-- <td><a class="button_edit" href="{% url 'editar_refugiado' refugiado.id %}">Editar</a></td> -->
+
+                        <td>
+                            <a href="{% url 'detalhes_refugiado' refugiado.id %}">Visualizar</a>
+                            <!-- <button class="button_delete" onclick="openModal({{ refugiado.id }})">Excluir</button> -->
+                        </td>
+
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.15/dist/jquery.mask.min.js"></script>
+
+
+<script>
+    // Variáveis para dados vindos do servidor
+    const colegios = {{ colegios_json| safe}};
+    const escolaridades = {{ escolaridades_json| safe}};
+
+    $(document).ready(function () {
+        // Aplica a máscara no campo telefone
+        $('#telefone').mask('(00) 00000-0000');
+    });
+
+
+
+    // Gerenciar checkbox "Parente no País"
+    const checkbox_parente_no_pais = document.getElementById("id_parente_no_pais");
+    checkbox_parente_no_pais.addEventListener("change", function () {
+        const divGrauParente = document.getElementById("id_div_grauParDoParNoPais");
+        divGrauParente.style.display = checkbox_parente_no_pais.checked ? 'block' : 'none';
+    });
+
+    // Gerenciar checkbox "Trabalha"
+    const checkbox_trabalha = document.getElementById("id_trabalha");
+    checkbox_trabalha.addEventListener("change", function () {
+        const divTrabalha = document.getElementById("id_div_trabalha");
+        divTrabalha.style.display = checkbox_trabalha.checked ? 'block' : 'none';
+    });
+
+    // Gerenciar checkbox "Deficiência"
+    const checkbox_deficiencia = document.getElementById("id_deficiencia");
+    checkbox_deficiencia.addEventListener("change", function () {
+        const divDeficiencia = document.getElementById("id_div_deficiencia");
+        divDeficiencia.style.display = checkbox_deficiencia.checked ? 'block' : 'none';
+    });
+
+    // Função para gerenciar visibilidade de conteúdo com botões
+    function gerencia_visibilidade(e) {
+        const button = e.target;
+        const conteudo = button.parentNode.parentNode.children[1]; // Segundo filho do avô do botão
+        const isHidden = conteudo.style.display === 'none';
+        conteudo.style.display = isHidden ? 'block' : 'none';
+        button.innerHTML = isHidden ? '-' : '+';
+    }
+
+    // Variável para ID do refugiado em modais
+    let id_refugiado;
+
+    // Abrir modal de confirmação
+    function openModal(id) {
+        document.getElementById('confirmModal').style.display = 'block';
+        id_refugiado = id;
+    }
+
+    // Fechar modal de confirmação
+    function closeModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+    }
+
+    // Confirmar exclusão e redirecionar
+    document.getElementById('confirmDelete').onclick = function () {
+        window.location.href = '/refugiado/deletar/' + id_refugiado;
+    };
+
+    // Fechar modal ao clicar fora dele
+    window.onclick = function (event) {
+        const modal = document.getElementById('confirmModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+    // Listener para dropdown "Tipo de Documento"
+    document.addEventListener("DOMContentLoaded", () => {
+        // Referência ao dropdown pelo ID
+        const select_tipo_doc = document.getElementById("tipo_doc");
+
+        select_tipo_doc.addEventListener('change', function () {
+            const selectedText = select_tipo_doc.options[select_tipo_doc.selectedIndex].text;
+            if (selectedText === '---------') {
+                document.getElementById("numero_doc").style.display = 'none';
+            } else {
+                document.getElementById("numero_doc").style.display = 'block';
+            }
+        });
+
+
+        const searchInput = document.getElementById("searchInput");
+        const table = document.querySelector("table");
+        const rows = table.querySelectorAll("tbody tr");
+
+        // Função para filtrar as linhas da tabela
+        searchInput.addEventListener("input", function () {
+            const searchTerm = searchInput.value.toLowerCase();  // Obtém o texto da pesquisa
+
+            rows.forEach(function (row) {
+                const nomeCell = row.querySelector("td:first-child");  // Primeiro <td> que é o nome
+                const nome = nomeCell.textContent.toLowerCase();  // Obtém o nome e converte para minúsculas
+
+                // Exibe ou oculta a linha dependendo da correspondência
+                if (nome.includes(searchTerm)) {
+                    row.style.display = "";  // Exibe a linha
+                } else {
+                    row.style.display = "none";  // Oculta a linha
+                }
+            });
+        });
+
+    });
+
+
+</script>
+
+{% endblock %}

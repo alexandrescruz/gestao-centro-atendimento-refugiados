@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Link para o CSS -->
+    <title>Login</title>
+</head>
+<body>
+     <center>
+        <img src="{% static 'img/logo/logo.png' %}" width="15%">
+    </center>
+    <br><br>
+        <div class="login-container">
+            <h2>Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" class="form-control" name="username" placeholder="Usuário" required>
+                <input type="password" class="form-control" name="password" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+</body>
+</html>

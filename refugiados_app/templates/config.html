@@ -1,0 +1,522 @@
+{% extends 'dashboard.html' %}
+
+
+{% block content %}
+
+<!-- Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2><br><br>
+        <p>Você tem certeza de que deseja excluir este item?</p><br><br>
+        <button class="button_delete" id="confirmDelete">Sim, excluir</button>
+        <button class="button_close" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Tipo de Documentos</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_tipo_doc.as_table}}
+            <button name="submit_tipo_doc" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tipo_doc in tipos_doc %}
+                    <tr>
+                        <td>{{ tipo_doc.id }}</td>
+                        <td>{{ tipo_doc.nome }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_tipo_doc' tipo_doc.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_tipo_doc"
+                                onclick="openModal(event,{{ tipo_doc.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Tipo de Doação</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_tipo_doacao.as_table}}
+            <button name="submit_tipo_doacao" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tipo_doacao in tipos_doacao %}
+                    <tr>
+                        <td>{{ tipo_doacao.id }}</td>
+                        <td>{{ tipo_doacao.nome }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_tipo_doacao' tipo_doacao.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_tipo_doacao"
+                                onclick="openModal(event,{{ tipo_doacao.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Tipo de Residência</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_tipo_residencia.as_table}}
+            <button name="submit_tipo_residencia" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tipo_residencia in tipos_residencia %}
+                    <tr>
+                        <td>{{ tipo_residencia.id }}</td>
+                        <td>{{ tipo_residencia.nome }}</td>
+                        <td><a class="button_edit"
+                                href="{% url 'editar_tipo_residencia' tipo_residencia.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_tipo_residencia"
+                                onclick="openModal(event,{{ tipo_residencia.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Profissão</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_profissao.as_table}}
+            <button name="submit_profissao" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profissao in lista_profissao %}
+                    <tr>
+                        <td>{{ profissao.id }}</td>
+                        <td>{{ profissao.nome }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_profissao' profissao.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_profissao"
+                                onclick="openModal(event,{{ profissao.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Colégio</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_colegio.as_table}}
+            <button name="submit_colegio" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Endereço</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for colegio in lista_colegio %}
+                    <tr>
+                        <td>{{ colegio.id }}</td>
+                        <td>{{ colegio.nome }}</td>
+                        <td>{{ colegio.endereco }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_colegio' colegio.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_colegio"
+                                onclick="openModal(event,{{ colegio.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Religião</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_religiao.as_table}}
+            <button name="submit_religiao" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for religiao in lista_religiao %}
+                    <tr>
+                        <td>{{ religiao.id }}</td>
+                        <td>{{ religiao.nome }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_religiao' religiao.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_religiao"
+                                onclick="openModal(event,{{ religiao.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Escolaridade</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_escolaridade.as_table}}
+            <button name="submit_escolaridade" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for escolaridade in lista_escolaridade %}
+                    <tr>
+                        <td>{{ escolaridade.id }}</td>
+                        <td>{{ escolaridade.nome }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_escolaridade' escolaridade.id %}">Editar</a>
+                        </td>
+                        <td><button class="button_delete" id="submit_escolaridade"
+                                onclick="openModal(event,{{ escolaridade.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Medicamentos</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_medicamento.as_table}}
+            <button name="submit_medicamento" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Valor</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicamento in lista_medicamento %}
+                    <tr>
+                        <td>{{ medicamento.id }}</td>
+                        <td>{{ medicamento.nome }}</td>
+                        <td>R$ {{ medicamento.valor }}</td>
+                        <td><a class="button_edit" href="{% url 'editar_medicamento' medicamento.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_medicamento"
+                                onclick="openModal(event,{{ medicamento.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Grau de Parentesco</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_GrauParDoParNoPais.as_table}}
+            <button name="submit_GrauParDoParNoPais" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for GrauParDoParNoPais in lista_GrauParDoParNoPais %}
+                    <tr>
+                        <td>{{ GrauParDoParNoPais.id }}</td>
+                        <td>{{ GrauParDoParNoPais.grau }}</td>
+                        <td><a class="button_edit"
+                                href="{% url 'editar_GrauParDoParNoPais' GrauParDoParNoPais.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_GrauParDoParNoPais"
+                                onclick="openModal(event,{{ GrauParDoParNoPais.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="open_button">
+        <h2>Cadastrar Locais de Atendimento</h2>
+        <button id="button_close" class="button_close" onclick="gerencia_visibilidade(event)">+</button>
+    </div>
+    <div style="display: none;">
+        <form id="" class="form" method="post">
+            {% csrf_token %}
+            {{form_LocalAtendimento.as_table}}
+            <button name="submit_LocalAtendimento" type="submit">Enviar</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Editar</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for LocalAtendimento in lista_LocalAtendimento %}
+                    <tr>
+                        <td>{{ LocalAtendimento.id }}</td>
+                        <td>{{ LocalAtendimento.nome }}</td>
+                        <td><a class="button_edit"
+                                href="{% url 'editar_LocalAtendimento' LocalAtendimento.id %}">Editar</a></td>
+                        <td><button class="button_delete" id="submit_LocalAtendimento"
+                                onclick="openModal(event,{{ LocalAtendimento.id }})">Excluir</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    
+    function gerencia_visibilidade(e) {
+        const button = e.target;
+        const pai = button.parentNode;
+        const avo = pai.parentNode;
+        const pais = avo.children
+        const conteudo = pais[1] // filho 2
+        if (conteudo.style.display === 'none') {
+            conteudo.style.display = 'block';
+            button.innerHTML = '-';
+        } else {
+            conteudo.style.display = 'none';
+            button.innerHTML = '+';
+        }
+    };
+
+    let id_global;
+    let submit_id;
+
+    function openModal(e, id) {
+        id_global = id
+        document.getElementById('confirmModal').style.display = 'block';
+        if (e.target.id == 'submit_tipo_doacao') {
+            submit_id = 'submit_tipo_doacao'
+        }
+        else if (e.target.id == 'submit_tipo_doc') {
+            submit_id = 'submit_tipo_doc'
+
+        }
+        else if (e.target.id == 'submit_tipo_residencia') {
+            submit_id = 'submit_tipo_residencia'
+
+        }
+        else if (e.target.id == 'submit_profissao') {
+            submit_id = 'submit_profissao'
+
+        }
+        else if (e.target.id == 'submit_colegio') {
+            submit_id = 'submit_colegio'
+
+        }
+        else if (e.target.id == 'submit_religiao') {
+            submit_id = 'submit_religiao'
+
+        }
+        else if (e.target.id == 'submit_escolaridade') {
+            submit_id = 'submit_escolaridade'
+
+        }
+        else if (e.target.id == 'submit_medicamento') {
+            submit_id = 'submit_medicamento'
+
+        }
+        else if (e.target.id == 'submit_GrauParDoParNoPais') {
+            submit_id = 'submit_GrauParDoParNoPais'
+
+        }
+        else if (e.target.id == 'submit_LocalAtendimento') {
+            submit_id = 'submit_LocalAtendimento'
+
+        }
+  
+
+
+
+
+    }
+    function closeModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+    }
+    document.getElementById('confirmDelete').onclick = function () {
+        if (submit_id == 'submit_tipo_doacao') {
+            window.location.href = '/config/deletar_tipo_doacao/' + id_global;
+        }
+        else if (submit_id == 'submit_tipo_doc') {
+            window.location.href = '/config/deletar_tipo_doc/' + id_global;
+
+        }
+
+        else if (submit_id == 'submit_tipo_residencia') {
+            window.location.href = '/config/deletar_tipo_residencia/' + id_global;
+
+        }
+        else if (submit_id == 'submit_profissao') {
+            window.location.href = '/config/deletar_profissao/' + id_global;
+
+        }
+        else if (submit_id == 'submit_colegio') {
+            window.location.href = '/config/deletar_colegio/' + id_global;
+
+        }
+        else if (submit_id == 'submit_religiao') {
+            window.location.href = '/config/deletar_religiao/' + id_global;
+
+        }
+        else if (submit_id == 'submit_escolaridade') {
+            window.location.href = '/config/deletar_escolaridade/' + id_global;
+
+        }
+        else if (submit_id == 'submit_medicamento') {
+            window.location.href = '/config/deletar_medicamento/' + id_global;
+
+        }
+        else if (submit_id == 'submit_GrauParDoParNoPais') {
+            window.location.href = '/config/deletar_GrauParDoParNoPais/' + id_global;
+
+        }
+        else if (submit_id == 'submit_LocalAtendimento') {
+            window.location.href = '/config/deletar_LocalAtendimento/' + id_global;
+
+        }
+
+    };
+    window.onclick = function (event) {
+        const modal = document.getElementById('confirmModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+</script>
+
+{% endblock %}

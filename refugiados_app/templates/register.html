@@ -1,0 +1,84 @@
+{% extends 'dashboard.html' %}
+
+
+{% block content %}
+<div class="container">
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+    <h2>Registrar Atendente</h2><br>
+    <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+    
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Nome de Usuário</label>
+            <input 
+                type="text" 
+                name="username" 
+                required
+                id="{{ form.username.id_for_label }}" 
+                value="{{ form.username.value }}" 
+                class="form-control" 
+                placeholder="Digite seu nome de usuário"
+                style="border: 1px solid #ccc; padding: 8px 12px; font-size: 16px; width: 100%; border-radius: 4px;">
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            <input 
+                type="email" 
+                name="email" 
+                required
+                id="{{ form.email.id_for_label }}" 
+                value="{{ form.email.value }}" 
+                class="form-control" 
+                placeholder="Digite seu e-mail"
+                style="border: 1px solid #ccc; padding: 8px 12px; font-size: 16px; width: 100%; border-radius: 4px;">
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Senha</label>
+            <input 
+                type="password" 
+                name="password1" 
+                required
+                id="{{ form.password1.id_for_label }}" 
+                value="{{ form.password1.value }}" 
+                class="form-control" 
+                placeholder="Digite sua senha"
+                style="border: 1px solid #ccc; padding: 8px 12px; font-size: 16px; width: 100%; border-radius: 4px;">
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirmar Senha</label>
+            <input 
+                type="password" 
+                name="password2" 
+                required
+                id="{{ form.password2.id_for_label }}" 
+                value="{{ form.password2.value }}" 
+                class="form-control" 
+                placeholder="Confirme sua senha"
+                style="border: 1px solid #ccc; padding: 8px 12px; font-size: 16px; width: 100%; border-radius: 4px;">
+        </div>
+    
+        {{atendente_form}}
+        <button type="submit" class="btn btn-primary" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Registrar
+        </button>
+    </form>
+    
+
+
+    </div>
+</div>
+
+</body>
+
+</html>
+
+{% endblock %}
