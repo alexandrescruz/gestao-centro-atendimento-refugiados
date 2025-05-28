@@ -16,8 +16,3 @@ passo 7: python manage.py createsuperuser (para criar um usuario admin)
 Passo 8: python manage.py runserver para rodar o servidor.
 
 passo 9: digitar na barra de endereço do navegador : localhost:8000 ou 127.0.0.1.:8000
-
-
-
-Observações: Precisa arrumar um jeito de adicionar mais filhos caso tenha esquecido no primeiro cadastro atraves do processo de edição 
- testetttt
